@@ -72,5 +72,7 @@ public class Accounting {
         return this.json;
     }
 
-    public JsonTray getParent() { return this.parent; }
+    public JsonTray getParent() { 
+        return this.parent; 
+    }
 }

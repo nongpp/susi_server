@@ -53,7 +53,11 @@ public class RemoteAccess {
     public static Map<String, Map<String, RemoteAccess>> history = new ConcurrentHashMap<String, Map<String, RemoteAccess>>();
     
     public static Query evaluate(final HttpServletRequest request) {
-        try{ request.setCharacterEncoding("UTF-8");} catch (UnsupportedEncodingException e){} // set character encoding before any request is made
+        try { 
+		request.setCharacterEncoding("UTF-8");
+	} catch (UnsupportedEncodingException e){
+		
+	} // set character encoding before any request is made
         String path = request.getServletPath();
         Map<String, String> qm = getQueryMap(request.getQueryString());
         Query post = new Query(request);
@@ -63,10 +67,14 @@ public class RemoteAccess {
         String httpsports = qm == null ? request.getParameter("port.https") : qm.get("port.https");
         Integer httpsport = httpsports == null ? null : Integer.parseInt(httpsports);
         String peername = qm == null ? request.getParameter("peername") : qm.get("peername");
-        if (peername == null || peername.length() > 132) peername = "anonymous";
+        if (peername == null || peername.length() > 132) {
+		peername = "anonymous";
+	}
         final String remoteHost = post.getClientHost();
         Map<String, RemoteAccess> hmap = history.get(request.getServletPath());
-        if (hmap == null) {hmap = new ConcurrentHashMap<>(); history.put(request.getServletPath(), hmap);}
+        if (hmap == null) {
+		hmap = new ConcurrentHashMap<>(); history.put(request.getServletPath(), hmap);
+	}
         if (httpport == null || httpsport == null) {
             // if port configuration is omitted, just update the value if it exist
             RemoteAccess ra = hmap.get(remoteHost);
@@ -87,7 +95,9 @@ public class RemoteAccess {
     
     public static long latestVisit(String servlet, String remoteHost) {
         Map<String, RemoteAccess> hmap = history.get(servlet);
-        if (hmap == null) {hmap = new ConcurrentHashMap<>(); history.put(servlet, hmap);}
+        if (hmap == null) {
+		hmap = new ConcurrentHashMap<>(); history.put(servlet, hmap);
+	}
         RemoteAccess ra = hmap.get(remoteHost);
         return ra == null ? -1 : ra.accessTime;
     }
@@ -226,12 +236,24 @@ public class RemoteAccess {
     
     public static FileTypeEncoding getFileType(HttpServletRequest request) {
         String servletPath = request.getServletPath();
-        if (servletPath.endsWith(".gif")) return new FileTypeEncoding(FileType.GIF);
-        if (servletPath.endsWith(".gif.base64")) return new FileTypeEncoding(FileType.GIF, true);
-        if (servletPath.endsWith(".png")) return new FileTypeEncoding(FileType.PNG);
-        if (servletPath.endsWith(".png.base64")) return new FileTypeEncoding(FileType.PNG, true);
-        if (servletPath.endsWith(".jpg")) return new FileTypeEncoding(FileType.JPG);
-        if (servletPath.endsWith(".jpg.base64")) return new FileTypeEncoding(FileType.JPG, true);
+        if (servletPath.endsWith(".gif")) {
+		return new FileTypeEncoding(FileType.GIF);
+	}
+        if (servletPath.endsWith(".gif.base64")) {
+		return new FileTypeEncoding(FileType.GIF, true);
+	}
+        if (servletPath.endsWith(".png")) {
+		return new FileTypeEncoding(FileType.PNG);
+	}
+        if (servletPath.endsWith(".png.base64")) {
+		return new FileTypeEncoding(FileType.PNG, true);
+	}
+        if (servletPath.endsWith(".jpg")) {
+		return new FileTypeEncoding(FileType.JPG);
+	}
+        if (servletPath.endsWith(".jpg.base64")) {
+		return new FileTypeEncoding(FileType.JPG, true);
+	}
         return new FileTypeEncoding(FileType.UNKNOWN);
     }
     

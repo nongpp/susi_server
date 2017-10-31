@@ -61,8 +61,8 @@ public abstract class AbstractAPIHandler extends HttpServlet implements APIHandl
     @Override
     public abstract UserRole getMinimalUserRole();
 
-	@Override
-	public abstract JSONObject getDefaultPermissions(UserRole baseUserRole);
+    @Override
+    public abstract JSONObject getDefaultPermissions(UserRole baseUserRole);
     
     public abstract ServiceResponse serviceImpl(Query post, HttpServletResponse response, Authorization rights, final JsonObjectWithDefault permissions) throws APIException;
     
